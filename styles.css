@@ -14,6 +14,14 @@
 
 /* common */
 
+.root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100vh;
+}
+
 /* board */
 
 .board {
@@ -28,19 +36,22 @@
     border-radius: 5px;
 }
 
+@media (max-width: 567px) {
+    .board {
+        width: 350px;
+        height: 350px;
+    }
+}
+
 /* square */
 
 .square {
     position: relative;
-
-    transition: transform 0.3s ease;
 }
 
-.square.available {
+.square.active {
     outline: rgba(0, 0, 0, 0.3) solid 2px;
     outline-offset: -4px;
-
-    cursor: pointer;
 }
 
 .square:nth-child(16n + 2),
@@ -54,32 +65,46 @@
     background-color: rgba(0, 0, 0, 0.25);
 }
 
-.square:nth-child(16n + 2).available,
-.square:nth-child(16n + 4).available,
-.square:nth-child(16n + 6).available,
-.square:nth-child(16n + 8).available,
-.square:nth-child(16n + 9).available,
-.square:nth-child(16n + 11).available,
-.square:nth-child(16n + 13).available,
-.square:nth-child(16n + 15).available {
+.square:nth-child(16n + 2).active,
+.square:nth-child(16n + 4).active,
+.square:nth-child(16n + 6).active,
+.square:nth-child(16n + 8).active,
+.square:nth-child(16n + 9).active,
+.square:nth-child(16n + 11).active,
+.square:nth-child(16n + 13).active,
+.square:nth-child(16n + 15).active {
     outline: rgba(255, 255, 255, 0.6) solid 2px;
-}
-
-.square.available:hover {
-    transform: scale(0.95);
 }
 
 /* piece */
 
 .piece {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    background-color: transparent;
 
     font-size: 40px;
     line-height: 1;
 
-    transform: translate(-50%, -50%);
-
     user-select: none;
+
+    cursor: pointer;
+}
+
+
+@media (max-width: 567px) {
+    .piece {
+        font-size: 24px;
+    }
 }

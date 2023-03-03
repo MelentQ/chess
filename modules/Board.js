@@ -2,19 +2,20 @@ import Square from "./Square.js";
 
 export default class Board {
     constructor(pieces = []) {
-        this.element = this.createElement();
-        this.squares = this.generateSquares();
+        this.element = this._createElement();
+        this.squares = this._generateSquares();
         this.pieces = pieces;
-        this.setPieces();
+        this._setPieces();
+        this._addEvents();
     }
 
-    createElement() {
+    _createElement() {
         const element = document.createElement('div');
         element.classList.add('board');
         return element;
     }
 
-    generateSquares() {
+    _generateSquares() {
         const squares = [];
         for (let i = 0; i < 8; i++) {
             const ranks = [];
@@ -27,9 +28,40 @@ export default class Board {
         return squares;
     }
 
-    setPieces() {
+    _setPieces() {
         this.pieces.forEach(piece => {
             this.squares[piece.coords[0]][piece.coords[1]].setPiece(piece);
+        })
+    }
+
+    _getActiveSquare() {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                if (this.squares[i][j].isActive) {
+                    return this.squares[i][j];
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // Тут происходит смешивание логики доски, полей и фигур
+    // Не придумал как это исправить
+    _addEvents() {
+        this.squares.forEach(ranks => {
+            ranks.forEach(square => {
+                square.element.addEventListener('click', () => {
+                    const activeSquare = this._getActiveSquare();
+                    if (!square.piece && activeSquare && activeSquare.piece && activeSquare.piece.check(square.coords)) {
+                        square.setPiece(activeSquare.piece);
+                        activeSquare.removePiece();
+                        activeSquare.toggle(false);
+                    } else if (square.piece && !activeSquare) {
+                        square.toggle(true);
+                    }
+                })
+            })
         })
     }
 
